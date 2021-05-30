@@ -11,7 +11,8 @@ class Jogo extends React.Component {
         quadrados: Array(9).fill(null)
       }],
       xIsNext: true,
-      numeroPasso: 0
+      numeroPasso: 0,
+      inverteJogadas: false
     }
   }
 
@@ -29,7 +30,7 @@ class Jogo extends React.Component {
         quadrados
       }]),
       xIsNext: !this.state.xIsNext,
-      numeroPasso: historico.length
+      numeroPasso: historico.length,
     })
   }
 
@@ -38,6 +39,9 @@ class Jogo extends React.Component {
       numeroPasso: passo,
       xIsNext: (passo % 2) === 0,
     })
+  }
+  inverteHistorico = jogadas => {
+    return jogadas.reverse()
   }
 
   render() {
@@ -59,7 +63,7 @@ class Jogo extends React.Component {
     const vencedor = calculaVencedor(atual.quadrados)
 
     var idxQuadradoModificado = null
-    const jogadas = historico.map((passo, jogada) => {
+    let jogadas = historico.map((passo, jogada) => {
 
       passo.quadrados.forEach((current, idx) => {
         if (historico[jogada - 1]?.quadrados[idx] !== current) {
@@ -98,8 +102,13 @@ class Jogo extends React.Component {
           />
         </div>
         <div className="jogo-info">
+          <div>
+            <button
+              onClick={() => { this.setState({ inverteJogadas: !this.state.inverteJogadas }) }
+              }>Inverte Histórico</button>
+          </div>
           <div>{status}</div>
-          <ol>{jogadas}</ol>
+          <ol>{this.state.inverteJogadas ? jogadas.reverse() : jogadas}</ol>
         </div>
       </div>
     );
