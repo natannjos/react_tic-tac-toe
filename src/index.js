@@ -1,53 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
-
-
-const Quadrado = (props) => {
-
-  return (
-    <button
-      className="quadrado"
-      onClick={props.onClick}
-    >
-      {props.value}
-    </button>
-  )
-}
-
-class Tabuleiro extends React.Component {
-
-  renderQuadrado(i) {
-    return (
-      <Quadrado
-        value={this.props.quadrados[i]}
-        onClick={() => this.props.onClick(i)}
-      />
-    );
-  }
-
-  render() {
-    return (
-      <div>
-        <div className="tabuleiro-row">
-          {this.renderQuadrado(0)}
-          {this.renderQuadrado(1)}
-          {this.renderQuadrado(2)}
-        </div>
-        <div className="tabuleiro-row">
-          {this.renderQuadrado(3)}
-          {this.renderQuadrado(4)}
-          {this.renderQuadrado(5)}
-        </div>
-        <div className="tabuleiro-row">
-          {this.renderQuadrado(6)}
-          {this.renderQuadrado(7)}
-          {this.renderQuadrado(8)}
-        </div>
-      </div>
-    );
-  }
-}
+import Tabuleiro from './components/Tabuleiro.component'
 
 class Jogo extends React.Component {
   constructor(props) {
