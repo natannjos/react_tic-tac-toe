@@ -76,7 +76,7 @@ class Jogo extends React.Component {
         <li key={jogada}>
           <button onClick={() => this.irPara(jogada)}>
             {this.state.numeroPasso === jogada ?
-              <b>desc</b>
+              <b>{desc}</b>
               : desc
             }
           </button>
