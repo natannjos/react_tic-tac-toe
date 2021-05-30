@@ -2,7 +2,7 @@ import React from 'react'
 import Quadrado from './Quadrado.component'
 export default class Tabuleiro extends React.Component {
 
-  renderQuadrado(i) {
+  renderQuadrado = i => {
     return (
       <Quadrado
         value={this.props.quadrados[i]}
@@ -11,24 +11,25 @@ export default class Tabuleiro extends React.Component {
     );
   }
 
+
   render() {
+    let rows = Array(3).fill(null)
+    let columns = Array(3).fill(null)
+    let counter = 0
     return (
       <div>
-        <div className="tabuleiro-row">
-          {this.renderQuadrado(0)}
-          {this.renderQuadrado(1)}
-          {this.renderQuadrado(2)}
-        </div>
-        <div className="tabuleiro-row">
-          {this.renderQuadrado(3)}
-          {this.renderQuadrado(4)}
-          {this.renderQuadrado(5)}
-        </div>
-        <div className="tabuleiro-row">
-          {this.renderQuadrado(6)}
-          {this.renderQuadrado(7)}
-          {this.renderQuadrado(8)}
-        </div>
+        {
+          rows.map((row, idx) => (
+            <div className="tabuleiro-row" key={idx}>
+              {
+                columns.map((column, idx) => (
+                  <span key={idx}>{this.renderQuadrado(counter++)}</span>
+                ))
+              }
+            </div>
+          ))
+
+        }
       </div>
     );
   }
