@@ -23,6 +23,7 @@ class Jogo extends React.Component {
     if (calculaVencedor(quadrados) || quadrados[i]) return
 
     quadrados[i] = this.state.xIsNext ? 'X' : 'O'
+
     this.setState({
       historico: historico.concat([{
         quadrados
@@ -42,6 +43,18 @@ class Jogo extends React.Component {
   render() {
     const historico = this.state.historico
     const atual = historico[this.state.numeroPasso]
+    const penultima = historico[this.state.numeroPasso - 1] || atual
+
+    var changedIdx = null
+    atual.quadrados.forEach((current, idx) => {
+      if (penultima.quadrados[idx] !== current) {
+        changedIdx = idx.toString()
+        return
+      }
+    })
+
+    console.log(changedIdx)
+
     const vencedor = calculaVencedor(atual.quadrados)
 
     const jogadas = historico.map((passo, jogada) => {
