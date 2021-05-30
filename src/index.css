@@ -48,3 +48,9 @@ ol, ul {
 .jogo-info {
   margin-left: 20px;
 }
+
+
+.highlight {
+  background-color: greenyellow;
+  color: red
+}

@@ -4,10 +4,11 @@ const Quadrado = (props) => {
 
   return (
     <button
-      className="quadrado"
+      className={`quadrado ${props.quadradosVencedor.includes(props.idx) ? 'highlight' : ''}`
+      }
       onClick={props.onClick}
     >
-      {props.value}
+      { props.value}
     </button>
   )
 }

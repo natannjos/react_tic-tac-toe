@@ -6,7 +6,9 @@ export default class Tabuleiro extends React.Component {
     return (
       <Quadrado
         value={this.props.quadrados[i]}
+        idx={i}
         onClick={() => this.props.onClick(i)}
+        quadradosVencedor={this.props.quadradosVencedor}
       />
     );
   }
@@ -23,7 +25,9 @@ export default class Tabuleiro extends React.Component {
             <div className="tabuleiro-row" key={idx}>
               {
                 columns.map((column, idx) => (
-                  <span key={idx}>{this.renderQuadrado(counter++)}</span>
+                  <span key={idx}>
+                    {this.renderQuadrado(counter++)}
+                  </span>
                 ))
               }
             </div>

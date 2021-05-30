@@ -13,7 +13,7 @@ class Jogo extends React.Component {
       xIsNext: true,
       numeroPasso: 0,
       inverteJogadas: false,
-      quadradosVencedor: null
+      quadradosVencedor: []
     }
   }
 
@@ -42,11 +42,8 @@ class Jogo extends React.Component {
     this.setState({
       numeroPasso: passo,
       xIsNext: (passo % 2) === 0,
-      quadradosVencedor: null
+      quadradosVencedor: []
     })
-  }
-  inverteHistorico = jogadas => {
-    return jogadas.reverse()
   }
 
   render() {
@@ -103,7 +100,7 @@ class Jogo extends React.Component {
         <div className="jogo-tabuleiro">
           <Tabuleiro
             quadrados={atual.quadrados}
-            vencedor={this.state.quadradosVencedor}
+            quadradosVencedor={this.state.quadradosVencedor}
             onClick={i => this.handleClick(i)}
           />
         </div>
