@@ -43,23 +43,33 @@ class Jogo extends React.Component {
   render() {
     const historico = this.state.historico
     const atual = historico[this.state.numeroPasso]
-    const penultima = historico[this.state.numeroPasso - 1] || atual
 
-    var changedIdx = null
-    atual.quadrados.forEach((current, idx) => {
-      if (penultima.quadrados[idx] !== current) {
-        changedIdx = idx.toString()
-        return
-      }
-    })
-
-    console.log(changedIdx)
+    const mapOfBoard = {
+      '0': { row: 1, col: 1 },
+      '1': { row: 1, col: 2 },
+      '2': { row: 1, col: 3 },
+      '3': { row: 2, col: 1 },
+      '4': { row: 2, col: 2 },
+      '5': { row: 2, col: 3 },
+      '6': { row: 3, col: 1 },
+      '7': { row: 3, col: 2 },
+      '8': { row: 3, col: 3 },
+    }
 
     const vencedor = calculaVencedor(atual.quadrados)
 
+    var changedIdx = null
     const jogadas = historico.map((passo, jogada) => {
+
+      passo.quadrados.forEach((current, idx) => {
+        if (historico[jogada - 1]?.quadrados[idx] !== current) {
+          changedIdx = idx.toString()
+          return
+        }
+      })
+
       const desc = jogada ?
-        `Ir para a jogada #${jogada}` :
+        `Ir para a jogada ${jogada}: col:${mapOfBoard[changedIdx].col}, row:${mapOfBoard[changedIdx].row}` :
         'Ir para início do jogo'
 
       return (
