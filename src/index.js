@@ -12,7 +12,8 @@ class Jogo extends React.Component {
       }],
       xIsNext: true,
       numeroPasso: 0,
-      inverteJogadas: false
+      inverteJogadas: false,
+      quadradosVencedor: null
     }
   }
 
@@ -21,7 +22,10 @@ class Jogo extends React.Component {
     const atual = historico[historico.length - 1]
     const quadrados = [...atual.quadrados]
 
-    if (calculaVencedor(quadrados) || quadrados[i]) return
+    if (calculaVencedor(quadrados)?.quadrados || quadrados[i]) {
+      this.setState({ quadradosVencedor: calculaVencedor(quadrados).quadradosVencedor })
+      return
+    }
 
     quadrados[i] = this.state.xIsNext ? 'X' : 'O'
 
@@ -38,6 +42,7 @@ class Jogo extends React.Component {
     this.setState({
       numeroPasso: passo,
       xIsNext: (passo % 2) === 0,
+      quadradosVencedor: null
     })
   }
   inverteHistorico = jogadas => {
@@ -60,7 +65,7 @@ class Jogo extends React.Component {
       '8': { row: 3, col: 3 },
     }
 
-    const vencedor = calculaVencedor(atual.quadrados)
+    const vencedor = calculaVencedor(atual.quadrados)?.quadrados
 
     var idxQuadradoModificado = null
     let jogadas = historico.map((passo, jogada) => {
@@ -98,6 +103,7 @@ class Jogo extends React.Component {
         <div className="jogo-tabuleiro">
           <Tabuleiro
             quadrados={atual.quadrados}
+            vencedor={this.state.quadradosVencedor}
             onClick={i => this.handleClick(i)}
           />
         </div>
@@ -134,7 +140,11 @@ const calculaVencedor = quadrados => {
       quadrados[a]
       && quadrados[a] === quadrados[b]
       && quadrados[a] === quadrados[c]) {
-      return quadrados[a]
+
+      return {
+        quadrados: quadrados[a],
+        quadradosVencedor: linhas[i]
+      }
     }
   }
   return null
