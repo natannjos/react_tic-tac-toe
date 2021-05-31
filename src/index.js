@@ -21,8 +21,7 @@ class Jogo extends React.Component {
     const historico = this.state.historico.slice(0, this.state.numeroPasso + 1)
     const atual = historico[historico.length - 1]
     const quadrados = [...atual.quadrados]
-
-    if (calculaVencedor(quadrados)?.quadrados || quadrados[i]) {
+    if (calculaVencedor(quadrados)?.quadrados.length > 0 || quadrados[i]) {
       this.setState({ quadradosVencedor: calculaVencedor(quadrados).quadradosVencedor })
       return
     }
@@ -36,6 +35,10 @@ class Jogo extends React.Component {
       xIsNext: !this.state.xIsNext,
       numeroPasso: historico.length,
     })
+    if (calculaVencedor(quadrados)?.quadrados.length > 0) {
+      this.setState({ quadradosVencedor: calculaVencedor(quadrados).quadradosVencedor })
+      return
+    }
   }
 
   irPara = passo => {
