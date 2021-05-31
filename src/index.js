@@ -3,26 +3,29 @@ import ReactDOM from 'react-dom'
 import './index.css'
 import Tabuleiro from './components/Tabuleiro.component'
 
+const initialState = {
+  historico: [{
+    quadrados: Array(9).fill(null)
+  }],
+  xIsNext: true,
+  numeroPasso: 0,
+  inverteJogadas: false,
+  quadradosVencedor: [],
+  fimDeJogo: false
+}
+
 class Jogo extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {
-      historico: [{
-        quadrados: Array(9).fill(null)
-      }],
-      xIsNext: true,
-      numeroPasso: 0,
-      inverteJogadas: false,
-      quadradosVencedor: []
-    }
+    this.state = { ...initialState }
   }
 
   handleClick = (i) => {
     const historico = this.state.historico.slice(0, this.state.numeroPasso + 1)
     const atual = historico[historico.length - 1]
     const quadrados = [...atual.quadrados]
+
     if (calculaVencedor(quadrados)?.quadrados.length > 0 || quadrados[i]) {
-      this.setState({ quadradosVencedor: calculaVencedor(quadrados).quadradosVencedor })
       return
     }
 
@@ -35,10 +38,15 @@ class Jogo extends React.Component {
       xIsNext: !this.state.xIsNext,
       numeroPasso: historico.length,
     })
-    if (calculaVencedor(quadrados)?.quadrados.length > 0) {
-      this.setState({ quadradosVencedor: calculaVencedor(quadrados).quadradosVencedor })
+    const temVencedor = calculaVencedor(quadrados)?.quadrados.length > 0
+    console.log(this.state.numeroPasso)
+    if (temVencedor) {
+      this.setState({ fimDeJogo: true, quadradosVencedor: calculaVencedor(quadrados).quadradosVencedor })
       return
+    } else if (!temVencedor && this.state.numeroPasso >= 8) {
+      this.setState({ fimDeJogo: true })
     }
+
   }
 
   irPara = passo => {
@@ -47,6 +55,10 @@ class Jogo extends React.Component {
       xIsNext: (passo % 2) === 0,
       quadradosVencedor: []
     })
+  }
+
+  zerarPartida = () => {
+    this.setState(initialState)
   }
 
   render() {
@@ -96,6 +108,7 @@ class Jogo extends React.Component {
     let status
 
     if (vencedor) status = `Vencedor: ${vencedor}`
+    else if (!vencedor && this.state.numeroPasso >= 9) status = `Empate`
     else status = `Próximo jogador: ${this.state.xIsNext ? 'X' : 'O'}`
 
     return (
@@ -113,8 +126,13 @@ class Jogo extends React.Component {
               onClick={() => { this.setState({ inverteJogadas: !this.state.inverteJogadas }) }
               }>Inverte Histórico</button>
           </div>
-          <div>{status}</div>
+          <div>
+            <h2>{status}</h2>
+          </div>
           <ol>{this.state.inverteJogadas ? jogadas.reverse() : jogadas}</ol>
+          {this.state.fimDeJogo ? <button onClick={this.zerarPartida}> Começar de Novo </button> : ''}
+
+
         </div>
       </div>
     );
